@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: <Widget>[
             Chart(recentTransactions: _recentTransaction,),
-            TransactionList(userTransactions: _transactions,)
+            TransactionList(userTransactions: _transactions,onDelete: _deleteTransaction,)
           ],
         ),
       ),
@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-    _addNewTransaction(String title,String price,DateTime dateTime){
+  _addNewTransaction(String title,String price,DateTime dateTime){
     final newTx = Transaction(
       date: dateTime,
       price: double.parse(price),
@@ -103,5 +103,11 @@ class _HomePageState extends State<HomePage> {
       _transactions.add(newTx);
     });
     Navigator.of(context).pop();
+  }
+
+  _deleteTransaction(String id){
+    setState(() {
+      _transactions.removeWhere((tx)=> tx.id == id);
+    });
   }
 }

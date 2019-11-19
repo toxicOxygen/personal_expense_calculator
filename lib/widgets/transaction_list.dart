@@ -5,8 +5,9 @@ import '../models/transaction.dart';
 class TransactionList extends StatelessWidget {
 
   final List<Transaction> userTransactions;
+  final Function onDelete;
 
-  TransactionList({@required this.userTransactions});
+  TransactionList({@required this.userTransactions,@required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -22,42 +23,29 @@ class TransactionList extends StatelessWidget {
         )
       ],):
       ListView.builder(
-        padding: EdgeInsets.symmetric(horizontal: 10.0),
         itemCount: userTransactions.length,
         itemBuilder: (context,index){
           return Card(
+            margin: EdgeInsets.all(10.0),
             elevation: 3.0,
-            child: Container(
-              padding: EdgeInsets.all(10.0),
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.all(10.0),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Theme.of(context).primaryColor,
-                        width: 2.0
-                      )
-                    ),
-                    child: Text(
-                      "\$${userTransactions[index].price.toStringAsFixed(2)}",
-                      style: TextStyle(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(width: 10,),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "${userTransactions[index].title}",
-                        style: Theme.of(context).textTheme.title,
-                      ),
-                      Text(DateFormat('yyyy-MM-dd').format(userTransactions[index].date))
-                    ],
-                  )
-                ],
+            child: ListTile(
+              leading: CircleAvatar(
+                radius: 30.0,
+                child: Text(
+                  "\$${userTransactions[index].price}"
+                ),
+              ),
+              title: Text(
+                userTransactions[index].title,
+                style: Theme.of(context).textTheme.title,
+              ),
+              subtitle: Text(
+                DateFormat('yyyy-MM-dd').format(userTransactions[index].date)
+              ),
+              trailing: IconButton(
+                icon: Icon(Icons.delete),
+                color: Theme.of(context).errorColor,
+                onPressed: ()=> onDelete(userTransactions[index].id),
               ),
             ),
           );
@@ -67,3 +55,40 @@ class TransactionList extends StatelessWidget {
     );
   }
 }
+
+// Card(
+//   elevation: 3.0,
+//   child: Container(
+//     padding: EdgeInsets.all(10.0),
+//     child: Row(
+//       children: <Widget>[
+//         Container(
+//           padding: EdgeInsets.all(10.0),
+//           alignment: Alignment.center,
+//           decoration: BoxDecoration(
+//             border: Border.all(
+//               color: Theme.of(context).primaryColor,
+//               width: 2.0
+//             )
+//           ),
+//           child: Text(
+//             "\$${userTransactions[index].price.toStringAsFixed(2)}",
+//             style: TextStyle(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold),
+//           ),
+//         ),
+//         SizedBox(width: 10,),
+//         Column(
+//           mainAxisSize: MainAxisSize.min,
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: <Widget>[
+//             Text(
+//               "${userTransactions[index].title}",
+//               style: Theme.of(context).textTheme.title,
+//             ),
+//             Text(DateFormat('yyyy-MM-dd').format(userTransactions[index].date))
+//           ],
+//         )
+//       ],
+//     ),
+//   ),
+// );
