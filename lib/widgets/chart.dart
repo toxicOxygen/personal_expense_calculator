@@ -37,25 +37,31 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 6.0,
-      margin: EdgeInsets.all(20),
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: groupedTransaction.map((tx){
-            return Flexible(
-              fit: FlexFit.tight,
-              child: ChartBar(
-                label: tx["day"],
-                spendingAmount: tx["amount"],
-                spendingPctOfTotal: totalSum <= 0 ? 0.0 : (tx["amount"] as double)/totalSum,
-              ),
-            );
-          }).toList(),
-        ),
-      ),
+    // final isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+    return LayoutBuilder(
+      builder: (ctx,constraints){
+        return Card(
+          elevation: 6.0,
+          margin: EdgeInsets.all(20),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: groupedTransaction.map((tx){
+                return Flexible(
+                  fit: FlexFit.tight,
+                  child: ChartBar(
+                    label: tx["day"],
+                    spendingAmount: tx["amount"],
+                    spendingPctOfTotal: totalSum <= 0 ? 0.0 : (tx["amount"] as double)/totalSum,
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -11,48 +11,61 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 300.0,
-      child: userTransactions.isEmpty?
-      Column(children: <Widget>[
-        Text('Nothing added to list',style: Theme.of(context).textTheme.title,),
-        SizedBox(height: 20.0,),
-        Container(
-          height: 200.0,
-          child: Image.asset('assets/images/waiting.png',fit: BoxFit.cover,)
-        )
-      ],):
-      ListView.builder(
-        itemCount: userTransactions.length,
-        itemBuilder: (context,index){
-          return Card(
-            margin: EdgeInsets.all(10.0),
-            elevation: 3.0,
-            child: ListTile(
-              leading: CircleAvatar(
-                radius: 30.0,
-                child: Text(
-                  "\$${userTransactions[index].price}"
+    final width = MediaQuery.of(context).size.width;
+
+    return LayoutBuilder(
+      builder: (ctx,constraints){
+        return Container(
+          child: userTransactions.isEmpty?
+          Column(children: <Widget>[
+            Text('Nothing added to list',style: Theme.of(context).textTheme.title,),
+            SizedBox(height: 20.0,),
+            Container(
+              height: constraints.maxHeight * 0.5,
+              child: Image.asset('assets/images/waiting.png',fit: BoxFit.cover,)
+            )
+          ],):
+          ListView.builder(
+            itemCount: userTransactions.length,
+            itemBuilder: (context,index){
+              return Card(
+                margin: EdgeInsets.all(10.0),
+                elevation: 3.0,
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 30.0,
+                    child: Text(
+                      "\$${userTransactions[index].price}"
+                    ),
+                  ),
+                  title: Text(
+                    userTransactions[index].title,
+                    style: Theme.of(context).textTheme.title,
+                  ),
+                  subtitle: Text(
+                    DateFormat('yyyy-MM-dd').format(userTransactions[index].date)
+                  ),
+                  trailing: width > 460 ?
+                  FlatButton.icon(
+                    icon: Icon(Icons.delete),
+                    label: Text('Delete'),
+                    onPressed: ()=> onDelete(userTransactions[index].id),
+                    textColor: Theme.of(context).errorColor,
+                  ) :
+                  IconButton(
+                    icon: Icon(Icons.delete),
+                    color: Theme.of(context).errorColor,
+                    onPressed: ()=> onDelete(userTransactions[index].id),
+                  ),
                 ),
-              ),
-              title: Text(
-                userTransactions[index].title,
-                style: Theme.of(context).textTheme.title,
-              ),
-              subtitle: Text(
-                DateFormat('yyyy-MM-dd').format(userTransactions[index].date)
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.delete),
-                color: Theme.of(context).errorColor,
-                onPressed: ()=> onDelete(userTransactions[index].id),
-              ),
-            ),
-          );
-        },
-              
-      ),
+              );
+            },
+                  
+          ),
+        );
+      },
     );
+    
   }
 }
 
