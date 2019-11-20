@@ -118,24 +118,28 @@ class _HomePageState extends State<HomePage> {
       child: Chart(recentTransactions: _recentTransaction,)
     );
 
-    final pageBody = Column(
-      children: <Widget>[
-        if(isLandScape) Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+    final pageBody = SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
           children: <Widget>[
-            Text("show chart"),
-            Switch.adaptive(
-              value: _showCart,
-              onChanged: (val) => setState((){ _showCart = val; }),
-            )
+            if(isLandScape) Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("show chart"),
+                Switch.adaptive(
+                  value: _showCart,
+                  onChanged: (val) => setState((){ _showCart = val; }),
+                )
+              ],
+            ),
+
+            if(isLandScape) _showCart ? chart : txList,
+            if(!isLandScape) chart,
+            if(!isLandScape) txList
+            
           ],
         ),
-
-        if(isLandScape) _showCart ? chart : txList,
-        if(!isLandScape) chart,
-        if(!isLandScape) txList
-        
-      ],
+      ),
     );
 
     //for IOS view
